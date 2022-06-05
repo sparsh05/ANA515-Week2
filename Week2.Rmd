@@ -1,0 +1,57 @@
+---
+title: "ANA 515 Assignment 1"
+author: "Sparsh Kathuria"
+date: '2022-06-05'
+output: 
+  html_document:
+    theme: 
+      bootswatch: minty
+---
+
+```{r setup, include = FALSE}
+# Install libraries
+library(tidyverse)
+library(knitr)
+library(bslib)
+```
+
+```{r , include = FALSE}
+#Import data from url
+url <- "https://raw.githubusercontent.com/fivethirtyeight/guns-data/master/full_data.csv"
+df <- read_csv(url)
+print(df)
+```
+
+```{r , include = FALSE}
+# Filter youth data
+youth<-filter(df, age <= 65)
+```
+
+```{r , include = FALSE}
+#Summary of youth dataset
+summary(youth)
+```
+
+```{r , include = FALSE}
+#number of rows in df
+df_nrow <- nrow(df)
+rem_row <- df_nrow - nrow(youth)
+```
+
+We have data about `r df_nrow` individuals killed by guns. Only `r rem_row` are older than 65. The distribution of the remainder is shown below: 
+
+```{r youth-dist, echo = FALSE} 
+youth %>% 
+ggplot(aes(age)) + 
+geom_freqpoly(binwidth = 1) 
+```
+
+```{r race-dist, echo = FALSE} 
+youth %>% 
+ggplot(aes(fct_infreq(race) %>% fct_rev())) + 
+geom_bar() + coord_flip() + 
+labs(x = "Victim race") 
+```
+
+
+
